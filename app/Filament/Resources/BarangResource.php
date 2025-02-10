@@ -49,6 +49,13 @@ class BarangResource extends Resource
                 ]),
         ])
         ->actions([
+            Tables\Actions\Action::make('lihat_qr')
+                ->label('Lihat QR')
+                ->icon('heroicon-o-qr-code') // Gunakan ikon yang lebih sesuai
+                ->modalHeading(fn ($record) => "QR Code - {$record->kode_barang}") // Tampilkan kode barang di modal heading
+                ->modalContent(fn ($record) => view('components.qrcode', ['kode_barang' => $record->kode_barang]))
+                ->modalButton('Tutup')
+                ->color('primary'), // Bikin tombol lebih menarik
             Tables\Actions\EditAction::make(), // Tombol Edit
             Tables\Actions\DeleteAction::make(), // Tombol Hapus
         ]);
