@@ -13,6 +13,8 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Models\Kategori;
+use Filament\Tables\Filters\Filter;
+use Filament\Tables\Filters\SelectFilter;
 
 class BarangResource extends Resource
 {
@@ -51,6 +53,11 @@ class BarangResource extends Resource
                     'Rusak' => 'Rusak',
                 ])
                 ->default('Baik'),
+
+            Forms\Components\TextInput::make('created_at')
+                ->label('Tanggal Ditambahkan')
+                ->disabled()
+                ->formatStateUsing(fn ($state) => $state ? \Carbon\Carbon::parse($state)->format('d M Y H:i') : '-'),    
     
             Forms\Components\Textarea::make('keterangan')
                 ->label('Keterangan')
@@ -62,16 +69,32 @@ class BarangResource extends Resource
     public static function table(Table $table): Table
     {
         return $table->columns([
-            Tables\Columns\TextColumn::make('id')->sortable(),
             Tables\Columns\TextColumn::make('kode_barang')->sortable()->searchable(),
             Tables\Columns\TextColumn::make('nama_barang')->sortable()->searchable(),
-            Tables\Columns\TextColumn::make('kategori.nama_kategori')
-                ->label('Kategori')
-                ->sortable(),
-            Tables\Columns\BadgeColumn::make('status')
-                ->colors([
-                    'Tersedia' => 'success',
+            Tables\Columns\TextColumn::make('kategori.nama_kategori')->label('Kategori')->sortable(),
+            Tables\Columns\TextColumn::make('status')
+                ->badge()
+                ->color(fn (string $state): string => match ($state) {
+                    'Tersedia' => 'success', 
                     'Dipinjam' => 'danger',
+                }),
+        ])
+        ->filters([
+            SelectFilter::make('kategori_id')
+                ->label('Kategori')
+                ->options(Kategori::all()->pluck('nama_kategori', 'id')),
+            SelectFilter::make('status')
+                ->label('Status')
+                ->options([
+                    'Tersedia' => 'Tersedia',
+                    'Dipinjam' => 'Dipinjam',
+                ]),
+            SelectFilter::make('kondisi')
+                ->label('Kondisi')
+                ->options([
+                    'Baik' => 'Baik',
+                    'Lecet' => 'Lecet',
+                    'Rusak' => 'Rusak',
                 ]),
         ])
         ->actions([
@@ -82,7 +105,6 @@ class BarangResource extends Resource
                 ->modalContent(fn ($record) => view('components.qrcode', ['kode_barang' => $record->kode_barang]))
                 ->modalButton('Tutup')
                 ->color('primary'),
-    
             Tables\Actions\EditAction::make(),
             Tables\Actions\DeleteAction::make(),
         ]);
