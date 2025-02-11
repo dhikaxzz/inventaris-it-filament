@@ -13,8 +13,10 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Models\Kategori;
+use App\Models\RiwayatKondisi;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
+use App\Filament\Resources\BarangResource\RelationManagers\RiwayatKondisiRelationManager;
 
 class BarangResource extends Resource
 {
@@ -46,13 +48,27 @@ class BarangResource extends Resource
                 ])
                 ->default('Tersedia'),
     
-            Forms\Components\Select::make('kondisi')
+                Forms\Components\Select::make('kondisi')
+                ->label('Kondisi')
                 ->options([
                     'Baik' => 'Baik',
                     'Lecet' => 'Lecet',
                     'Rusak' => 'Rusak',
                 ])
-                ->default('Baik'),
+                ->default('Baik') // Set default biar nggak kosong
+                ->afterStateUpdated(function ($state, $record) {
+                    if ($record && $record->exists && $record->kondisi !== $state) { 
+                        $keterangan = "Barang berubah dari kondisi {$record->kondisi} ke {$state}";
+            
+                        $record->riwayatKondisi()->create([
+                            'kondisi_sebelumnya' => $record->kondisi,
+                            'kondisi_setelahnya' => $state,
+                            'keterangan' => $keterangan,
+                            'tanggal_perubahan' => now(),
+                        ]);
+                    }
+                }),
+            
 
             Forms\Components\TextInput::make('created_at')
                 ->label('Tanggal Ditambahkan')
@@ -113,7 +129,7 @@ class BarangResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RiwayatKondisiRelationManager::class,
         ];
     }
 

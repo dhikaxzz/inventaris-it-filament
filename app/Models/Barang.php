@@ -20,6 +20,11 @@ class Barang extends Model
         'keterangan',
     ];
 
+    protected $attributes = [
+        'kondisi' => 'Baik',
+    ];
+    
+
     // Relasi ke Kategori
     public function kategori()
     {
@@ -31,4 +36,8 @@ class Barang extends Model
         return $this->hasMany(Peminjaman::class, 'barang_id');
     }
 
+    public function riwayatKondisi()
+    {
+        return $this->hasMany(RiwayatKondisi::class, 'barang_id');
+    }
 }
