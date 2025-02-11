@@ -23,25 +23,51 @@ class BarangResource extends Resource
     public static function form(Form $form): Form
     {
         return $form->schema([
-            Forms\Components\TextInput::make('kode_barang')->required()->unique(),
-            Forms\Components\TextInput::make('nama_barang')->required(),
+            Forms\Components\TextInput::make('kode_barang')
+                ->required()
+                ->unique()
+                ->maxLength(255),
+    
+            Forms\Components\TextInput::make('nama_barang')
+                ->required()
+                ->maxLength(255),
+    
             Forms\Components\Select::make('kategori_id')
                 ->label('Kategori')
                 ->options(fn () => Kategori::all()->pluck('nama_kategori', 'id'))
                 ->required(),
-            Forms\Components\Select::make('status')->options([
-                'Tersedia' => 'Tersedia',
-                'Dipinjam' => 'Dipinjam',
-            ])->default('Tersedia'),
+    
+            Forms\Components\Select::make('status')
+                ->options([
+                    'Tersedia' => 'Tersedia',
+                    'Dipinjam' => 'Dipinjam',
+                ])
+                ->default('Tersedia'),
+    
+            Forms\Components\Select::make('kondisi')
+                ->options([
+                    'Baik' => 'Baik',
+                    'Lecet' => 'Lecet',
+                    'Rusak' => 'Rusak',
+                ])
+                ->default('Baik'),
+    
+            Forms\Components\Textarea::make('keterangan')
+                ->label('Keterangan')
+                ->rows(3)
+                ->nullable(),
         ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table->columns([
+            Tables\Columns\TextColumn::make('id')->sortable(),
             Tables\Columns\TextColumn::make('kode_barang')->sortable()->searchable(),
             Tables\Columns\TextColumn::make('nama_barang')->sortable()->searchable(),
-            Tables\Columns\TextColumn::make('kategori.nama_kategori')->label('Kategori')->sortable(),
+            Tables\Columns\TextColumn::make('kategori.nama_kategori')
+                ->label('Kategori')
+                ->sortable(),
             Tables\Columns\BadgeColumn::make('status')
                 ->colors([
                     'Tersedia' => 'success',
@@ -51,13 +77,14 @@ class BarangResource extends Resource
         ->actions([
             Tables\Actions\Action::make('lihat_qr')
                 ->label('Lihat QR')
-                ->icon('heroicon-o-qr-code') // Gunakan ikon yang lebih sesuai
-                ->modalHeading(fn ($record) => "QR Code - {$record->kode_barang}") // Tampilkan kode barang di modal heading
+                ->icon('heroicon-o-qr-code')
+                ->modalHeading(fn ($record) => "QR Code - {$record->kode_barang}")
                 ->modalContent(fn ($record) => view('components.qrcode', ['kode_barang' => $record->kode_barang]))
                 ->modalButton('Tutup')
-                ->color('primary'), // Bikin tombol lebih menarik
-            Tables\Actions\EditAction::make(), // Tombol Edit
-            Tables\Actions\DeleteAction::make(), // Tombol Hapus
+                ->color('primary'),
+    
+            Tables\Actions\EditAction::make(),
+            Tables\Actions\DeleteAction::make(),
         ]);
     }
 
