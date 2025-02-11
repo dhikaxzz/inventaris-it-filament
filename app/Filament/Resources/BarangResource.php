@@ -27,7 +27,7 @@ class BarangResource extends Resource
         return $form->schema([
             Forms\Components\TextInput::make('kode_barang')
                 ->required()
-                ->unique()
+                ->unique(ignoreRecord: true) // Abaikan jika record ID sama
                 ->maxLength(255),
     
             Forms\Components\TextInput::make('nama_barang')
