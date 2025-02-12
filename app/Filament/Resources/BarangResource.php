@@ -17,12 +17,26 @@ use App\Models\RiwayatKondisi;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use App\Filament\Resources\BarangResource\RelationManagers\RiwayatKondisiRelationManager;
+use Filament\Tables\Actions\Action;
 
 class BarangResource extends Resource
 {
     protected static ?string $model = Barang::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
+    protected function getHeaderActions(): array
+    {
+        return [
+            Action::make('scan_qr')
+                ->label('Scan QR')
+                ->icon('heroicon-o-qr-code')
+                ->modalHeading('Scan QR Code Barang')
+                ->modalContent(view('components.scan-qr')) // Panggil modal untuk scan
+                ->modalButton('Tutup')
+                ->color('primary'),
+        ];
+    }
 
     public static function form(Form $form): Form
     {
