@@ -41,8 +41,7 @@ document.addEventListener('alpine:init', () => {
                 let data = await response.json();
 
                 if (data.success) {
-                    alert(`Barang berhasil ditemukan: ${data.barang.nama_barang} Status: ${data.barang.status} Kondisi: ${data.barang.kondisi}`);
-
+                    
                     // Refresh halaman atau filter tabel barang berdasarkan hasil scan
                     window.location.href = "/admin/barangs?q=" + kodeBarang;
                 } else {

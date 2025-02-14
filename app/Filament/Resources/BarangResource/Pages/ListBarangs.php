@@ -23,14 +23,16 @@ class ListBarangs extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
             Actions\Action::make('scan_qr')
             ->label('Scan QR')
             ->icon('heroicon-o-qr-code')
             ->button()
             ->modalCancelAction(false) // Hapus tombol Cancel
             ->modalSubmitAction(false) // Hapus tombol Cancel
+            ->modalHeading('Scan QR Code') // Tambahkan judul modal
+            ->modalWidth('lg') // Perbesar ukuran modal
             ->modalContent(fn () => view('components.scan-qr')),
+            Actions\CreateAction::make(),
         ];
     }
 
