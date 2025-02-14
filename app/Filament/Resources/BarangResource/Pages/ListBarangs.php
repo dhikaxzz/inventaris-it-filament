@@ -12,19 +12,14 @@ use Illuminate\Database\Eloquent\Builder;
 class ListBarangs extends ListRecords
 {
     protected static string $resource = BarangResource::class;
-    protected $listeners = ['qrScanned' => 'searchBarang']; // Tangkap event dari JS
-    public $search = '';
-    public function searchBarang($kodeBarang)
-    {
-        $this->search = $kodeBarang; // Simpan hasil scan ke search
-    }
-
+        
     protected function getTableQuery(): ?Builder
     {
+        $kodeBarang = request()->query('q'); // Ambil kode_barang dari URL
         return Barang::query()
-            ->when($this->search, fn ($query) => $query->where('kode_barang', 'like', "%{$this->search}%"));
+            ->when($kodeBarang, fn ($query) => $query->where('kode_barang', 'like', "%{$kodeBarang}%"));
     }
-        
+
     protected function getHeaderActions(): array
     {
         return [
@@ -34,6 +29,7 @@ class ListBarangs extends ListRecords
             ->icon('heroicon-o-qr-code')
             ->button()
             ->modalCancelAction(false) // Hapus tombol Cancel
+            ->modalSubmitAction(false) // Hapus tombol Cancel
             ->modalContent(fn () => view('components.scan-qr')),
         ];
     }
