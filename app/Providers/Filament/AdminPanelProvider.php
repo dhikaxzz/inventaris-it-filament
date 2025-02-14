@@ -62,7 +62,9 @@ class AdminPanelProvider extends PanelProvider
     public function boot(): void
     {
         FilamentAsset::register([
-            Js::make('quagga', 'https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js'),
+            Js::make('html5-qrcode', 'https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js'),
+            Js::make('html5-qrcode.min', __DIR__ . '/../../resources/js/html5-qrcode.min.js'),
+            Js::make('html5-qrcode-script', __DIR__ . '/../../resources/js/html5-qrcode-script.js'),
         ]);
     }
 }

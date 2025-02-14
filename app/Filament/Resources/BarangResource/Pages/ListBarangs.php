@@ -30,12 +30,10 @@ class ListBarangs extends ListRecords
         return [
             Actions\CreateAction::make(),
             Actions\Action::make('scan_qr')
-                ->label('Scan QR')
-                ->icon('heroicon-o-qr-code')
-                ->modalHeading('Scan QR Code Barang')
-                ->modalContent(view('components.scan-qr')) // Panggil modal scan
-                ->modalButton('Tutup')
-                ->color('primary'),
+            ->label('Scan QR')
+            ->icon('heroicon-o-qr-code')
+            ->button()
+            ->modalContent(fn () => view('components.scan-qr')),
         ];
     }
 
