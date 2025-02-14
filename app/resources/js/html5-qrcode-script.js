@@ -4,9 +4,11 @@ document.addEventListener('alpine:init', () => {
     Alpine.data('qrScanner', () => ({
         scannedResult: '',
         qrCodeReader: null,
+        isModalOpen: false,
 
         initScanner() {
             this.qrCodeReader = new Html5Qrcode("qr-reader");
+
             this.qrCodeReader.start(
                 { facingMode: "environment" }, // Kamera belakang
                 { fps: 10, qrbox: 250 },
@@ -21,7 +23,7 @@ document.addEventListener('alpine:init', () => {
                     await this.searchBarang(decodedText);
                 },
                 (error) => {
-                    console.error(error);
+                    console.error("QR Scan Error:", error);
                 }
             );
         },
@@ -41,9 +43,11 @@ document.addEventListener('alpine:init', () => {
                 let data = await response.json();
 
                 if (data.success) {
-                    
-                    // Refresh halaman atau filter tabel barang berdasarkan hasil scan
-                    window.location.href = "/admin/barangs?q=" + kodeBarang;
+                    // Tutup modal dulu biar bersih
+                    this.isModalOpen = false;
+                    setTimeout(() => {
+                        window.location.href = `/admin/barangs?q=${kodeBarang}`;
+                    }, 300); // Delay biar smooth
                 } else {
                     alert("Barang tidak ditemukan!");
                 }
@@ -54,7 +58,7 @@ document.addEventListener('alpine:init', () => {
     }));
 });
 
-// Pastikan scanner mati saat modal ditutup
+// Scanner otomatis mati ketika modal ditutup
 document.addEventListener('close-modal', () => {
     const qrScanner = Alpine.$data(document.querySelector('[x-data="qrScanner"]'), 'qrScanner');
     if (qrScanner) {
