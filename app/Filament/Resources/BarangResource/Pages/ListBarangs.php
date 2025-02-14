@@ -33,6 +33,7 @@ class ListBarangs extends ListRecords
             ->label('Scan QR')
             ->icon('heroicon-o-qr-code')
             ->button()
+            ->modalCancelAction(false) // Hapus tombol Cancel
             ->modalContent(fn () => view('components.scan-qr')),
         ];
     }

@@ -31,3 +31,11 @@ document.addEventListener('alpine:init', () => {
         }
     }));
 });
+
+// Mendengarkan event close-modal dari Filament
+document.addEventListener('close-modal', () => {
+    const qrScanner = Alpine.$data(document.querySelector('[x-data="qrScanner"]'), 'qrScanner');
+    if (qrScanner) {
+        qrScanner.destroyScanner();
+    }
+});
