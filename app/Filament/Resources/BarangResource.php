@@ -23,7 +23,11 @@ class BarangResource extends Resource
 {
     protected static ?string $model = Barang::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
+
+    protected static ?string $navigationLabel = 'Kelola Barang';
+
+    protected static ?string $pluralLabel = 'Barang';
 
     protected function getHeaderActions(): array
     {
