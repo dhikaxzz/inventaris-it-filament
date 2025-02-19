@@ -14,11 +14,15 @@ class Barang extends Model
     protected $fillable = [
         'kode_barang',
         'nama_barang',
+        'merek',
+        'model_seri',
         'kategori_id',
         'status',
         'kondisi',
         'keterangan',
     ];
+
+    public $timestamps = true; // Pastikan ini ada
 
     protected $attributes = [
         'kondisi' => 'Baik',

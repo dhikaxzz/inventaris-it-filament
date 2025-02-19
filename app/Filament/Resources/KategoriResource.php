@@ -19,6 +19,10 @@ class KategoriResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?string $navigationLabel = 'Kelola Kategori';
+
+    protected static ?string $navigationGroup = 'Manajemen';
+
     public static function form(Form $form): Form
     {
         return $form->schema([

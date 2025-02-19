@@ -23,7 +23,11 @@ class BarangResource extends Resource
 {
     protected static ?string $model = Barang::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
+    
+    protected static ?string $navigationLabel = 'Kelola Barang';
+
+    protected static ?string $navigationGroup = 'Manajemen';
 
     protected function getHeaderActions(): array
     {
@@ -49,6 +53,16 @@ class BarangResource extends Resource
             Forms\Components\TextInput::make('nama_barang')
                 ->required()
                 ->maxLength(255),
+
+            Forms\Components\TextInput::make('merek')
+                ->label('Merek')
+                ->maxLength(255)
+                ->nullable(),
+
+            Forms\Components\TextInput::make('model_seri')
+                ->label('Model/Seri')
+                ->maxLength(255)
+                ->nullable(),
     
             Forms\Components\Select::make('kategori_id')
                 ->label('Kategori')
@@ -62,7 +76,7 @@ class BarangResource extends Resource
                 ])
                 ->default('Tersedia'),
     
-                Forms\Components\Select::make('kondisi')
+            Forms\Components\Select::make('kondisi')
                 ->label('Kondisi')
                 ->options([
                     'Baik' => 'Baik',
@@ -82,8 +96,7 @@ class BarangResource extends Resource
                         ]);
                     }
                 }),
-            
-
+                
             Forms\Components\TextInput::make('created_at')
                 ->label('Tanggal Ditambahkan')
                 ->disabled()
@@ -102,12 +115,15 @@ class BarangResource extends Resource
             Tables\Columns\TextColumn::make('kode_barang')->sortable()->searchable(),
             Tables\Columns\TextColumn::make('nama_barang')->sortable()->searchable(),
             Tables\Columns\TextColumn::make('kategori.nama_kategori')->label('Kategori')->sortable(),
+            Tables\Columns\TextColumn::make('merek')->sortable()->searchable(),
+            Tables\Columns\TextColumn::make('model_seri')->label('Model/Seri')->sortable()->searchable(),
             Tables\Columns\TextColumn::make('status')
                 ->badge()
                 ->color(fn (string $state): string => match ($state) {
                     'Tersedia' => 'success', 
                     'Dipinjam' => 'danger',
                 }),
+
         ])
         ->filters([
             SelectFilter::make('kategori_id')
