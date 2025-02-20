@@ -116,7 +116,7 @@ class BarangResource extends Resource
             Tables\Columns\TextColumn::make('nama_barang')->sortable()->searchable(),
             Tables\Columns\TextColumn::make('kategori.nama_kategori')->label('Kategori')->sortable(),
             Tables\Columns\TextColumn::make('merek')->sortable()->searchable(),
-            Tables\Columns\TextColumn::make('model_seri')->label('Model/Seri')->sortable()->searchable(),
+            // Tables\Columns\TextColumn::make('model_seri')->label('Model/Seri')->sortable()->searchable(),
             Tables\Columns\TextColumn::make('status')
                 ->badge()
                 ->color(fn (string $state): string => match ($state) {
@@ -153,6 +153,9 @@ class BarangResource extends Resource
                 ->color('primary'),
             Tables\Actions\EditAction::make(),
             Tables\Actions\DeleteAction::make(),
+        ])
+        ->bulkActions([ // Tambahkan bulk delete
+            Tables\Actions\DeleteBulkAction::make(),
         ]);
     }
 

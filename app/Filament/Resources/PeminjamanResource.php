@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Grid;
 
 class PeminjamanResource extends Resource
 {
@@ -29,31 +30,49 @@ class PeminjamanResource extends Resource
     {
         return $form
             ->schema([
-                Section::make('Detail Peminjaman')->schema([
-                    TextInput::make('nama_peminjam')
-                        ->required()
-                        ->label('Nama Peminjam'),
+                Section::make('Detail Peminjaman')
+                    ->description('Isi informasi peminjaman dengan lengkap.')
+                    ->schema([
+                        Grid::make(2) // Membagi form menjadi 2 kolom
+                            ->schema([
+                                TextInput::make('nama_peminjam')
+                                    ->required()
+                                    ->label('Nama Peminjam')
+                                    ->placeholder('Masukkan nama peminjam')
+                                    ->columnSpan(1),
 
-                    TextInput::make('unit')
-                        ->label('Unit'), // Tidak otomatis, bisa diinput manual
+                                TextInput::make('unit')
+                                    ->label('Unit')
+                                    ->required()
+                                    ->placeholder('Masukkan unit')
+                                    ->columnSpan(1), 
 
-                    TextInput::make('tempat')
-                        ->required()
-                        ->label('Tempat Barang Dipinjam'),
+                                TextInput::make('tempat')
+                                    ->required()
+                                    ->label('Tempat Barang Dipinjam')
+                                    ->placeholder('Lokasi peminjaman')
+                                    ->columnSpanFull(), // Lebar penuh
 
-                    TextInput::make('acara')
-                        ->label('Acara')
-                        ->nullable(),
+                                TextInput::make('acara')
+                                    ->label('Acara')
+                                    ->placeholder('Nama acara')
+                                    ->nullable()                                    
+                                    ->required()
+                                    ->columnSpanFull(),
 
-                    DatePicker::make('tanggal_kembali')
-                        ->required()
-                        ->label('Tanggal Kembali'),
+                                DatePicker::make('tanggal_kembali')
+                                    ->required()
+                                    ->label('Tanggal Kembali')
+                                    ->placeholder('Pilih tanggal kembali')
+                                    ->columnSpan(1),
 
-                    TextInput::make('tanggal_pinjam')
-                        ->disabled()
-                        ->default(now()->format('Y-m-d H:i'))
-                        ->label('Tanggal Pinjam'),
-                ]),
+                                TextInput::make('tanggal_pinjam')
+                                    ->disabled()
+                                    ->default(now()->format('Y-m-d H:i'))
+                                    ->label('Tanggal Pinjam')
+                                    ->columnSpan(1),
+                            ]),
+                    ]),
             ]);
     }
 

@@ -40,6 +40,9 @@ class KategoriResource extends Resource
         ->actions([
             Tables\Actions\EditAction::make(), // Tombol Edit
             Tables\Actions\DeleteAction::make(), // Tombol Hapus
+        ])
+        ->bulkActions([ // Tambahkan bulk delete
+            Tables\Actions\DeleteBulkAction::make(),
         ]);
     }
 
