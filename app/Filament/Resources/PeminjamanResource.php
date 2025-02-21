@@ -16,6 +16,10 @@ use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Grid;
+use App\Models\Pengguna; // Tambahkan model Pengguna
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Placeholder;
+use Filament\Forms\Get;
 
 class PeminjamanResource extends Resource
 {
@@ -35,17 +39,21 @@ class PeminjamanResource extends Resource
                     ->schema([
                         Grid::make(2) // Membagi form menjadi 2 kolom
                             ->schema([
-                                TextInput::make('nama_peminjam')
-                                    ->required()
+                                Select::make('nama_peminjam')
                                     ->label('Nama Peminjam')
-                                    ->placeholder('Masukkan nama peminjam')
-                                    ->columnSpan(1),
+                                    ->options(Pengguna::pluck('nama', 'nama')) // Menggunakan nama sebagai key dan value
+                                    ->searchable()
+                                    ->required()
+                                    ->reactive() // Agar bisa memicu perubahan unit
+                                    ->afterStateUpdated(fn (Get $get, callable $set) => 
+                                        $set('unit', Pengguna::where('nama', $get('nama_peminjam'))->value('unit'))
+                                    ), // Mengambil unit sesuai nama peminjam
 
                                 TextInput::make('unit')
                                     ->label('Unit')
-                                    ->required()
-                                    ->placeholder('Masukkan unit')
-                                    ->columnSpan(1), 
+                                    ->disabled()
+                                    ->placeholder('Unit akan otomatis terisi')
+                                    ->required(),
 
                                 TextInput::make('tempat')
                                     ->required()
@@ -56,7 +64,7 @@ class PeminjamanResource extends Resource
                                 TextInput::make('acara')
                                     ->label('Acara')
                                     ->placeholder('Nama acara')
-                                    ->nullable()                                    
+                                    ->nullable()
                                     ->required()
                                     ->columnSpanFull(),
 
@@ -66,11 +74,9 @@ class PeminjamanResource extends Resource
                                     ->placeholder('Pilih tanggal kembali')
                                     ->columnSpan(1),
 
-                                TextInput::make('tanggal_pinjam')
-                                    ->disabled()
-                                    ->default(now()->format('Y-m-d H:i'))
+                                Placeholder::make('tanggal_pinjam')
                                     ->label('Tanggal Pinjam')
-                                    ->columnSpan(1),
+                                    ->content(now()->format('Y-m-d H:i')), // Menampilkan tanggal pinjam saat ini
                             ]),
                     ]),
             ]);

@@ -10,4 +10,9 @@ class Pengguna extends Model
     use HasFactory;
 
     protected $fillable = ['nama', 'email', 'no_telp', 'jabatan', 'unit', 'alamat'];
+
+    public function peminjaman()
+    {
+        return $this->hasMany(Peminjaman::class, 'nama_peminjam', 'nama');
+    }
 }

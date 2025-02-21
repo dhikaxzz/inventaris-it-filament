@@ -24,4 +24,21 @@ class Peminjaman extends Model
         'tanggal_pinjam' => 'datetime',
         'tanggal_kembali' => 'date',
     ];
+
+    public function pengguna() 
+    {
+        return $this->belongsTo(Pengguna::class, 'nama_peminjam', 'nama');
+    }
+    
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($peminjaman) {
+            if (!$peminjaman->unit) {
+                $peminjaman->unit = \App\Models\Pengguna::where('nama', $peminjaman->nama_peminjam)->value('unit');
+            }
+        });
+    }
+
 }
