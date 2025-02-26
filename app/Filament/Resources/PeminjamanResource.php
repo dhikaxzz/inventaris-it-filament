@@ -39,67 +39,72 @@ class PeminjamanResource extends Resource
                 Section::make('Detail Peminjaman')
                     ->description('Isi informasi peminjaman dengan lengkap.')
                     ->schema([
-                        Grid::make(2) // Membagi form menjadi 2 kolom
+                        Grid::make(2)
                             ->schema([
                                 Select::make('nama_peminjam')
                                     ->label('Nama Peminjam')
-                                    ->options(Pengguna::pluck('nama', 'nama')) // Menggunakan nama sebagai key dan value
+                                    ->options(Pengguna::pluck('nama', 'nama'))
                                     ->searchable()
                                     ->required()
-                                    ->reactive() // Agar bisa memicu perubahan unit
+                                    ->reactive()
                                     ->afterStateUpdated(fn (Get $get, callable $set) => 
                                         $set('unit', Pengguna::where('nama', $get('nama_peminjam'))->value('unit'))
-                                    ), // Mengambil unit sesuai nama peminjam
-
+                                    ),
+        
                                 TextInput::make('unit')
                                     ->label('Unit')
                                     ->disabled()
                                     ->placeholder('Unit akan otomatis terisi')
                                     ->required(),
-
+        
                                 TextInput::make('tempat')
                                     ->required()
                                     ->label('Tempat Barang Dipinjam')
                                     ->placeholder('Lokasi peminjaman')
-                                    ->columnSpanFull(), // Lebar penuh
-
+                                    ->columnSpanFull(),
+        
                                 TextInput::make('acara')
                                     ->label('Acara')
                                     ->placeholder('Nama acara')
-                                    ->nullable()
                                     ->required()
                                     ->columnSpanFull(),
-
+        
                                 DatePicker::make('tanggal_kembali')
                                     ->required()
                                     ->label('Tanggal Kembali')
                                     ->placeholder('Pilih tanggal kembali')
                                     ->columnSpan(1),
-
+        
                                 Placeholder::make('tanggal_pinjam')
                                     ->label('Tanggal Pinjam')
-                                    ->content(now()->format('Y-m-d H:i')), // Menampilkan tanggal pinjam saat ini
+                                    ->content(now()->format('Y-m-d H:i')),
                             ]),
-
-                            Repeater::make('detailPeminjaman')
-                                ->relationship('detailPeminjaman')
-                                ->schema([
-                                    Select::make('barang_id')
-                                        ->label('Barang')
-                                        ->options(Barang::where('status', 'tersedia')->pluck('nama_barang', 'id'))
-                                        ->required()
-                                        ->reactive()
-                                        ->afterStateUpdated(fn ($state, callable $set) => 
-                                            $set('kode_barang', Barang::where('id', $state)->value('kode_barang'))
-                                        ),
-                            
-                                    TextInput::make('kode_barang')
-                                        ->label('Kode Barang')
-                                        ->disabled()
-                                        ->required()
-                                ])                        
-                                ->minItems(1) // Harus minimal 1 barang
-                                ->columns(2),
+                    ]),
+                
+                Section::make()
+                    ->schema([
+                        Repeater::make('detailPeminjaman')
+                            ->relationship('detailPeminjaman')
+                            ->schema([
+                                Grid::make(2)
+                                    ->schema([
+                                        Select::make('barang_id')
+                                            ->label('Barang')
+                                            ->options(Barang::where('status', 'tersedia')->pluck('nama_barang', 'id'))
+                                            ->required()
+                                            ->reactive()
+                                            ->afterStateUpdated(fn ($state, callable $set) => 
+                                                $set('kode_barang', Barang::where('id', $state)->value('kode_barang'))
+                                            ),
+                
+                                        TextInput::make('kode_barang')
+                                            ->label('Kode Barang')
+                                            ->disabled()
+                                            ->required(),
+                                    ])
+                            ])
+                            ->grid(2) // Membuat dua kolom saat menambah barang
+                            ->minItems(1),
                     ]),
             ]);
     }
