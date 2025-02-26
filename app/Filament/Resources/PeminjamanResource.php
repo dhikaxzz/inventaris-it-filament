@@ -90,7 +90,7 @@ class PeminjamanResource extends Resource
                                     ->schema([
                                         Select::make('barang_id')
                                             ->label('Barang')
-                                            ->options(Barang::where('status', 'tersedia')->pluck('nama_barang', 'id'))
+                                            ->options(fn () => Barang::where('status', 'tersedia')->pluck('nama_barang', 'id'))
                                             ->required()
                                             ->reactive()
                                             ->afterStateUpdated(fn ($state, callable $set) => 

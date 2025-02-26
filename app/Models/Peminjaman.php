@@ -39,6 +39,13 @@ class Peminjaman extends Model
                 $peminjaman->unit = \App\Models\Pengguna::where('nama', $peminjaman->nama_peminjam)->value('unit');
             }
         });
+
+        static::deleting(function ($peminjaman) {
+            // Kembalikan semua barang yang terkait ke status 'tersedia'
+            foreach ($peminjaman->detailPeminjaman as $detail) {
+                Barang::where('id', $detail->barang_id)->update(['status' => 'tersedia']);
+            }
+        });
     }
 
     public function detailPeminjaman()

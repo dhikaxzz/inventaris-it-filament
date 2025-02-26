@@ -28,12 +28,24 @@ class DetailPeminjaman extends Model
         return $this->belongsTo(Barang::class);
     }
 
+    public function kembalikanBarang()
+    {
+        $this->barang->update(['status' => 'tersedia']);
+    }
+
     protected static function boot()
     {
         parent::boot();
-
+        
         static::creating(function ($detailPeminjaman) {
-            $detailPeminjaman->kode_barang = Barang::where('id', $detailPeminjaman->barang_id)->value('kode_barang');
+            if (!$detailPeminjaman->kode_barang) {
+                $detailPeminjaman->kode_barang = Barang::where('id', $detailPeminjaman->barang_id)->value('kode_barang');
+            }
+        });
+    
+        static::deleting(function ($detailPeminjaman) {
+            // Kembalikan status barang menjadi 'tersedia' saat peminjaman dihapus
+            Barang::where('id', $detailPeminjaman->barang_id)->update(['status' => 'tersedia']);
         });
     }
 
