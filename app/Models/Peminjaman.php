@@ -41,4 +41,8 @@ class Peminjaman extends Model
         });
     }
 
+    public function detailPeminjaman()
+    {
+        return $this->hasMany(DetailPeminjaman::class);
+    }
 }

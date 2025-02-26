@@ -5,6 +5,8 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\PeminjamanResource\Pages;
 use App\Filament\Resources\PeminjamanResource\RelationManagers;
 use App\Models\Peminjaman;
+use Filament\Forms\Components\Repeater;
+use App\Models\Barang; // Ini untuk model Barang
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -78,6 +80,26 @@ class PeminjamanResource extends Resource
                                     ->label('Tanggal Pinjam')
                                     ->content(now()->format('Y-m-d H:i')), // Menampilkan tanggal pinjam saat ini
                             ]),
+
+                            Repeater::make('detailPeminjaman')
+                                ->relationship('detailPeminjaman')
+                                ->schema([
+                                    Select::make('barang_id')
+                                        ->label('Barang')
+                                        ->options(Barang::where('status', 'tersedia')->pluck('nama_barang', 'id'))
+                                        ->required()
+                                        ->reactive()
+                                        ->afterStateUpdated(fn ($state, callable $set) => 
+                                            $set('kode_barang', Barang::where('id', $state)->value('kode_barang'))
+                                        ),
+                            
+                                    TextInput::make('kode_barang')
+                                        ->label('Kode Barang')
+                                        ->disabled()
+                                        ->required()
+                                ])                        
+                                ->minItems(1) // Harus minimal 1 barang
+                                ->columns(2),
                     ]),
             ]);
     }
@@ -107,6 +129,12 @@ class PeminjamanResource extends Resource
             Tables\Columns\TextColumn::make('tanggal_kembali')
                 ->label('Tanggal Kembali')
                 ->dateTime('d M Y'),
+
+
+            // Tables\Columns\TextColumn::make('detailPeminjaman.barang.nama_barang')
+            // ->label('Barang Dipinjam')
+            // ->listWithLineBreaks(),
+
         ])
         ->filters([
             //
@@ -135,4 +163,11 @@ class PeminjamanResource extends Resource
             'edit' => Pages\EditPeminjaman::route('/{record}/edit'),
         ];
     }
+
+    public function store()
+    {
+        $data = request()->all();
+        dd($data); // Debug untuk melihat apakah kode_barang dikirim
+    }
+
 }

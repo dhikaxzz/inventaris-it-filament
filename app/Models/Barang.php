@@ -44,4 +44,10 @@ class Barang extends Model
     {
         return $this->hasMany(RiwayatKondisi::class, 'barang_id');
     }
+
+    public function detailPeminjaman()
+    {
+        return $this->hasMany(DetailPeminjaman::class);
+    }
+
 }
