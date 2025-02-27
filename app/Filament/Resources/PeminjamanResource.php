@@ -94,7 +94,18 @@ class PeminjamanResource extends Resource
                                     ->schema([
                                         Select::make('barang_id')
                                             ->label('Barang')
-                                            ->options(fn () => Barang::where('status', 'tersedia')->pluck('nama_barang', 'id'))
+                                            ->options(function (Get $get, ?string $state) {
+                                                // Ambil semua barang tersedia
+                                                $availableItems = Barang::where('status', 'tersedia')->pluck('nama_barang', 'id');
+                                        
+                                                // Jika sedang edit dan barang sudah dipilih sebelumnya, tambahkan ke opsi meskipun tidak tersedia
+                                                if ($state) {
+                                                    $selectedItem = Barang::where('id', $state)->pluck('nama_barang', 'id');
+                                                    return $availableItems->union($selectedItem);
+                                                }
+                                        
+                                                return $availableItems;
+                                            })
                                             ->required()
                                             ->reactive()
                                             ->afterStateUpdated(fn ($state, callable $set) => 
