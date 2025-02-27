@@ -20,6 +20,8 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Filament\Support\Facades\FilamentAsset;
 use Filament\Facades\Filament;
 use Filament\Support\Assets\Js;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\View;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -66,5 +68,10 @@ class AdminPanelProvider extends PanelProvider
             Js::make('html5-qrcode.min', __DIR__ . '/../../resources/js/html5-qrcode.min.js'),
             Js::make('html5-qrcode-script', __DIR__ . '/../../resources/js/html5-qrcode-script.js'),
         ]);
+    }
+    public function printPDF($record)
+    {
+        $pdf = Pdf::loadView('pdf.peminjaman', ['peminjaman' => $record]);
+        return $pdf->stream();
     }
 }

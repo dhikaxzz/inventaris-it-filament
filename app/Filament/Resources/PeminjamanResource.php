@@ -22,6 +22,10 @@ use App\Models\Pengguna; // Tambahkan model Pengguna
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Get;
+use Filament\Tables\Actions\Action;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Response;
 
 class PeminjamanResource extends Resource
 {
@@ -145,9 +149,21 @@ class PeminjamanResource extends Resource
             //
         ])
         ->actions([
+            Action::make('cetakPDF')
+            ->label('Cetak PDF')
+            ->icon('heroicon-o-printer')
+            ->color('success')
+            ->action(fn ($record) => Response::streamDownload(
+                function () use ($record) {
+                    $pdf = Pdf::loadView('pdf.peminjaman', ['peminjaman' => $record]);
+                    echo $pdf->stream();
+                },
+                "peminjaman-{$record->id}.pdf"
+            )),
             Tables\Actions\EditAction::make(),
-            Tables\Actions\DeleteAction::make(),
-        ])
+            Tables\Actions\DeleteAction::make()
+        ]) 
+
         ->bulkActions([
             Tables\Actions\DeleteBulkAction::make(),
         ]);

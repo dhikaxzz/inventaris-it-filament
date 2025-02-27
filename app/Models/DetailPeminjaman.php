@@ -42,6 +42,10 @@ class DetailPeminjaman extends Model
                 $detailPeminjaman->kode_barang = Barang::where('id', $detailPeminjaman->barang_id)->value('kode_barang');
             }
         });
+
+        static::created(function ($detailPeminjaman) {
+            Barang::where('id', $detailPeminjaman->barang_id)->update(['status' => 'dipinjam']);
+        });        
     
         static::deleting(function ($detailPeminjaman) {
             // Kembalikan status barang menjadi 'tersedia' saat peminjaman dihapus
