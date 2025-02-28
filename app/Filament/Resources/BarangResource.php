@@ -116,6 +116,7 @@ class BarangResource extends Resource
             Tables\Columns\TextColumn::make('nama_barang')->sortable()->searchable(),
             Tables\Columns\TextColumn::make('kategori.nama_kategori')->label('Kategori')->sortable(),
             Tables\Columns\TextColumn::make('merek')->sortable()->searchable(),
+            Tables\Columns\TextColumn::make('kondisi')->sortable()->searchable(),
             // Tables\Columns\TextColumn::make('model_seri')->label('Model/Seri')->sortable()->searchable(),
             Tables\Columns\TextColumn::make('status')
                 ->badge()

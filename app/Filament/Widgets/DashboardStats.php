@@ -42,7 +42,7 @@ class DashboardStats extends BaseWidget
                 ->color('info')
                 ->icon('heroicon-o-users'),
 
-                Stat::make('Barang Rusak/Lecet', Barang::whereNotNull('kondisi')->where(DB::raw('LOWER(kondisi)'), '!=', 'baik')->count())
+                Stat::make('Total Barang Rusak/Lecet', Barang::whereNotNull('kondisi')->where(DB::raw('LOWER(kondisi)'), '!=', 'baik')->count())
                 ->description('Barang dengan kondisi rusak atau lecet')
                 ->color('gray')
                 ->icon('heroicon-o-x-circle'),            
