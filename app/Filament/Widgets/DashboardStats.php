@@ -12,40 +12,55 @@ use Illuminate\Support\Facades\DB;
 class DashboardStats extends BaseWidget
 {
     protected static ?string $pollingInterval = '10s'; // Auto-refresh setiap 10 detik
-    protected static ?int $columns = 3; // Tampilan dalam 3 kolom
+    protected static ?int $columns = 3; // Tampilkan dalam 3 kolom otomatis
 
     protected function getStats(): array
     {
+        $totalBarang = Barang::count();
+        $barangTersedia = Barang::where('status', 'tersedia')->count();
+        $barangDipinjam = Barang::where('status', 'dipinjam')->count();
+        $peminjamanAktif = Peminjaman::where('tanggal_kembali', '>=', now())->count();
+        $totalPengguna = Pengguna::count();
+        $barangRusakLecet = Barang::whereNotNull('kondisi')
+            ->where(DB::raw('LOWER(kondisi)'), '!=', 'baik')
+            ->count();
+
         return [
-            Stat::make('Total Barang', Barang::count())
+            Stat::make('Total Barang', $totalBarang)
                 ->description('Total semua barang dalam sistem')
                 ->color('primary')
-                ->icon('heroicon-o-archive-box'),
+                ->icon('heroicon-o-archive-box')
+                ->chart([$totalBarang - 5, $totalBarang - 3, $totalBarang]), // Simulasi tren
 
-            Stat::make('Barang Tersedia', Barang::where('status', 'tersedia')->count())
-                ->description('Barang yang masih bisa dipinjam')
+            Stat::make('Barang Tersedia', $barangTersedia)
+                ->description('Barang yang bisa dipinjam')
                 ->color('success')
-                ->icon('heroicon-o-check-circle'),
+                ->icon('heroicon-o-check-circle')
+                ->chart([$barangTersedia - 2, $barangTersedia - 1, $barangTersedia]),
 
-            Stat::make('Barang Dipinjam', Barang::where('status', 'dipinjam')->count())
+            Stat::make('Barang Dipinjam', $barangDipinjam)
                 ->description('Barang yang sedang dipinjam')
                 ->color('danger')
-                ->icon('heroicon-o-exclamation-triangle'),
+                ->icon('heroicon-o-exclamation-triangle')
+                ->chart([$barangDipinjam - 1, $barangDipinjam + 1, $barangDipinjam]),
 
-                Stat::make('Peminjaman Berlangsung', Peminjaman::where('tanggal_kembali', '>=', now())->count())
-                ->description('Peminjaman yang masih aktif')
+            Stat::make('Peminjaman Aktif', $peminjamanAktif)
+                ->description('Peminjaman yang belum dikembalikan')
                 ->color('warning')
-                ->icon('heroicon-o-clipboard-document-check'),            
+                ->icon('heroicon-o-clipboard-document-check')
+                ->chart([$peminjamanAktif - 2, $peminjamanAktif, $peminjamanAktif + 2]),
 
-            Stat::make('Total Pengguna', Pengguna::count())
+            Stat::make('Total Pengguna', $totalPengguna)
                 ->description('Jumlah pengguna yang terdaftar')
                 ->color('info')
-                ->icon('heroicon-o-users'),
+                ->icon('heroicon-o-users')
+                ->chart([$totalPengguna - 2, $totalPengguna + 1, $totalPengguna]),
 
-                Stat::make('Total Barang Rusak/Lecet', Barang::whereNotNull('kondisi')->where(DB::raw('LOWER(kondisi)'), '!=', 'baik')->count())
-                ->description('Barang dengan kondisi rusak atau lecet')
+            Stat::make('Barang Rusak/Lecet', $barangRusakLecet)
+                ->description('Barang dalam kondisi rusak atau lecet')
                 ->color('gray')
-                ->icon('heroicon-o-x-circle'),            
+                ->icon('heroicon-o-x-circle')
+                ->chart([$barangRusakLecet - 1, $barangRusakLecet, $barangRusakLecet + 1]),
         ];
     }
 }

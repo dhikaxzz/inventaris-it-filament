@@ -107,6 +107,7 @@ class PeminjamanResource extends Resource
                                                 return $availableItems;
                                             })
                                             ->required()
+                                            ->searchable()
                                             ->reactive()
                                             ->afterStateUpdated(fn ($state, callable $set) => 
                                                 $set('kode_barang', Barang::where('id', $state)->value('kode_barang'))

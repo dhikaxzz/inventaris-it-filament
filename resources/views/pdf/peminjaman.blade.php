@@ -79,15 +79,15 @@
         <table>
             <thead>
                 <tr>
-                    <th>Nama Barang</th>
                     <th>Kode Barang</th>
+                    <th>Nama Barang</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($peminjaman->detailPeminjaman as $detail)
                     <tr>
-                        <td>{{ $detail->barang->nama_barang }}</td>
                         <td>{{ $detail->barang->kode_barang }}</td>
+                        <td>{{ $detail->barang->nama_barang }}</td>
                     </tr>
                 @endforeach
             </tbody>
