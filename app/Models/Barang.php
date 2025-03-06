@@ -20,6 +20,8 @@ class Barang extends Model
         'status',
         'kondisi',
         'keterangan',
+        'lokasi',
+        'foto',
     ];
 
     public $timestamps = true; // Pastikan ini ada

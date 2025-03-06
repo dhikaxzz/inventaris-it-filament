@@ -11,6 +11,7 @@
         "barryvdh/laravel-dompdf": "^3.1",
         "dasprid/enum": "^1.0",
         "filament/filament": "^3.2",
+        "intervention/image": "^3.11",
         "laravel/framework": "^11.31",
         "laravel/tinker": "^2.9",
         "simplesoftwareio/simple-qrcode": "^4.2"

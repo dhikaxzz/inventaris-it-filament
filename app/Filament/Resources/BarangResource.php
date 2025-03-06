@@ -18,6 +18,10 @@ use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use App\Filament\Resources\BarangResource\RelationManagers\RiwayatKondisiRelationManager;
 use Filament\Tables\Actions\Action;
+use Intervention\Image\Facades\Image;
+use Filament\Forms\Components\FileUpload;
+// use Intervention\Image\Facades\Image;
+// use Intervention\Image\ImageManagerStatic as Image;
 
 class BarangResource extends Resource
 {
@@ -96,17 +100,27 @@ class BarangResource extends Resource
                         ]);
                     }
                 }),
-                
-            Forms\Components\TextInput::make('created_at')
-                ->label('Tanggal Ditambahkan')
-                ->disabled()
-                ->formatStateUsing(fn ($state) => $state ? \Carbon\Carbon::parse($state)->format('d M Y H:i') : '-'),    
+
+            Forms\Components\TextInput::make('lokasi')
+                ->label('Lokasi Barang')
+                ->required(),
     
             Forms\Components\Textarea::make('keterangan')
                 ->label('Keterangan')
                 ->rows(3)
                 ->nullable(),
-        ]);
+
+            Forms\Components\TextInput::make('created_at')
+                ->label('Tanggal Ditambahkan')
+                ->disabled()
+                ->formatStateUsing(fn ($state) => $state ? \Carbon\Carbon::parse($state)->format('d M Y H:i') : '-'),    
+                
+                Forms\Components\FileUpload::make('foto')
+                ->label('Foto Barang')
+                ->image()
+                ->directory('uploads-barang')
+                ->nullable(),
+            ]);
     }
 
     public static function table(Table $table): Table
@@ -117,6 +131,7 @@ class BarangResource extends Resource
             Tables\Columns\TextColumn::make('kategori.nama_kategori')->label('Kategori')->sortable(),
             Tables\Columns\TextColumn::make('merek')->sortable()->searchable(),
             Tables\Columns\TextColumn::make('kondisi')->sortable()->searchable(),
+            Tables\Columns\TextColumn::make('lokasi')->sortable()->searchable(),
             // Tables\Columns\TextColumn::make('model_seri')->label('Model/Seri')->sortable()->searchable(),
             Tables\Columns\TextColumn::make('status')
                 ->badge()
