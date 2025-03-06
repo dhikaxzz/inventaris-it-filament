@@ -73,12 +73,9 @@ class BarangResource extends Resource
                 ->options(fn () => Kategori::all()->pluck('nama_kategori', 'id'))
                 ->required(),
     
-            Forms\Components\Select::make('status')
-                ->options([
-                    'Tersedia' => 'Tersedia',
-                    'Dipinjam' => 'Dipinjam',
-                ])
-                ->default('Tersedia'),
+            Forms\Components\TextInput::make('lokasi')
+                ->label('Lokasi Barang')
+                ->required(),
     
             Forms\Components\Select::make('kondisi')
                 ->label('Kondisi')
@@ -101,9 +98,11 @@ class BarangResource extends Resource
                     }
                 }),
 
-            Forms\Components\TextInput::make('lokasi')
-                ->label('Lokasi Barang')
-                ->required(),
+
+
+            Forms\Components\TextInput::make('status')
+                ->default('Tersedia')
+                ->disabled(),
     
             Forms\Components\Textarea::make('keterangan')
                 ->label('Keterangan')
