@@ -45,6 +45,16 @@ class Peminjaman extends Model
             foreach ($peminjaman->detailPeminjaman as $detail) {
                 Barang::where('id', $detail->barang_id)->update(['status' => 'tersedia']);
             }
+
+            // Catat riwayat peminjaman
+            RiwayatPeminjaman::create([
+                'nama_peminjam' => $peminjaman->nama_peminjam,
+                'unit' => $peminjaman->unit,
+                'tempat' => $peminjaman->tempat,
+                'acara' => $peminjaman->acara,
+                'tanggal_pinjam' => $peminjaman->tanggal_pinjam,
+                'tanggal_kembali' => $peminjaman->tanggal_kembali,
+            ]);
         });
     }
 
