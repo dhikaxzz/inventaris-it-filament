@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\Storage;
 
 class Barang extends Model
 {
@@ -51,5 +52,11 @@ class Barang extends Model
     {
         return $this->hasMany(DetailPeminjaman::class);
     }
+
+   // Akses URL Foto
+   public function getFotoUrlAttribute()
+   {
+       return $this->foto ? Storage::url($this->foto) : null;
+   }
 
 }

@@ -18,9 +18,8 @@ use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use App\Filament\Resources\BarangResource\RelationManagers\RiwayatKondisiRelationManager;
 use Filament\Tables\Actions\Action;
-use Intervention\Image\Facades\Image;
 use Filament\Forms\Components\FileUpload;
-// use Intervention\Image\Facades\Image;
+use Intervention\Image\Facades\Image;
 // use Intervention\Image\ImageManagerStatic as Image;
 
 class BarangResource extends Resource
@@ -117,8 +116,15 @@ class BarangResource extends Resource
                 Forms\Components\FileUpload::make('foto')
                 ->label('Foto Barang')
                 ->image()
-                ->directory('uploads-barang')
-                ->nullable(),
+                ->maxSize(1024) // Maksimal 1MB
+                ->directory('uploads-barang') // Simpan di storage/app/public/uploads-barang
+                ->preserveFilenames(),
+                // ->afterStateUploaded(function ($state) {
+                //     $image = Image::make($state->getRealPath());
+                //     $image->resize(800, 600, function ($constraint) {
+                //         $constraint->aspectRatio();
+                //     })->save();
+                // }),         
             ]);
     }
 
