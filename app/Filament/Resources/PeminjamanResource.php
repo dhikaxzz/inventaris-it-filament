@@ -32,9 +32,9 @@ class PeminjamanResource extends Resource
     protected static ?string $model = Peminjaman::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-newspaper';
-    protected static ?string $navigationLabel = 'Peminjaman';
-    protected static ?string $pluralLabel = 'Peminjaman';
-    protected static ?string $modelLabel = 'Peminjaman';
+    protected static ?string $navigationLabel = 'Peminjaman Aktif';
+    protected static ?string $pluralLabel = 'Peminjaman Aktif';
+    protected static ?string $modelLabel = 'Peminjaman Aktif';
 
     public static function form(Form $form): Form
     {
