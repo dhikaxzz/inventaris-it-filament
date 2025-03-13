@@ -26,6 +26,7 @@ use Filament\Tables\Actions\Action;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Response;
+use Filament\Notifications\Notification;
 
 class PeminjamanResource extends Resource
 {
@@ -131,25 +132,37 @@ class PeminjamanResource extends Resource
         ->columns([
             Tables\Columns\TextColumn::make('nama_peminjam')
                 ->label('Nama Peminjam')
+                ->sortable()
+                ->color(fn ($record) => now()->gt($record->tanggal_kembali) ? 'danger' : '')
                 ->searchable(),
 
             Tables\Columns\TextColumn::make('unit')
                 ->label('Unit Peminjam')
+                ->sortable()
+                ->color(fn ($record) => now()->gt($record->tanggal_kembali) ? 'danger' : '')
                 ->searchable(),
 
             Tables\Columns\TextColumn::make('tempat')
-                ->label('Tempat Dipinjam'),
+                ->label('Tempat Dipinjam')
+                ->sortable()
+                ->color(fn ($record) => now()->gt($record->tanggal_kembali) ? 'danger' : '')
+                ->searchable(),
 
             Tables\Columns\TextColumn::make('acara')
-                ->label('Acara'),
+                ->label('Acara')
+                ->sortable()
+                ->color(fn ($record) => now()->gt($record->tanggal_kembali) ? 'danger' : '')
+                ->searchable(),
 
             Tables\Columns\TextColumn::make('tanggal_pinjam')
                 ->label('Tanggal Pinjam')
+                ->color(fn ($record) => now()->gt($record->tanggal_kembali) ? 'danger' : '')
                 ->dateTime('d M Y H:i'),
 
-            Tables\Columns\TextColumn::make('tanggal_kembali')
+                Tables\Columns\TextColumn::make('tanggal_kembali')
                 ->label('Tanggal Kembali')
-                ->dateTime('d M Y'),
+                ->dateTime('d M Y')
+                ->color(fn ($record) => now()->gt($record->tanggal_kembali) ? 'danger' : ''),            
 
 
             // Tables\Columns\TextColumn::make('detailPeminjaman.barang.nama_barang')

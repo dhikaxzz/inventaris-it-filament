@@ -104,10 +104,12 @@ class PenggunaResource extends Resource
         
                 TextColumn::make('no_telp')
                     ->label('No. Telepon')
+                    ->searchable()
                     ->sortable(),
         
                 TextColumn::make('unit')
                     ->label('Unit / Departemen')
+                    ->searchable()
                     ->sortable(),
         
                 TextColumn::make('created_at') // Tambahkan kolom waktu dibuat
