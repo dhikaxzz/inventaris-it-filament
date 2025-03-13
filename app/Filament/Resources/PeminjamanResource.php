@@ -154,16 +154,23 @@ class PeminjamanResource extends Resource
                 ->color(fn ($record) => now()->gt($record->tanggal_kembali) ? 'danger' : '')
                 ->searchable(),
 
+            Tables\Columns\TextColumn::make('status')
+                ->label('Status')
+                ->formatStateUsing(fn ($record) => $record->tanggal_kembali < now() ? 'Terlambat' : 'On Time')
+                ->searchable()
+                ->sortable()
+                ->badge()
+                ->color(fn ($record) => $record->tanggal_kembali < now() ? 'danger' : 'warning'),
+                
             Tables\Columns\TextColumn::make('tanggal_pinjam')
                 ->label('Tanggal Pinjam')
                 ->color(fn ($record) => now()->gt($record->tanggal_kembali) ? 'danger' : '')
                 ->dateTime('d M Y H:i'),
 
-                Tables\Columns\TextColumn::make('tanggal_kembali')
+            Tables\Columns\TextColumn::make('tanggal_kembali')
                 ->label('Tanggal Kembali')
                 ->dateTime('d M Y')
-                ->color(fn ($record) => now()->gt($record->tanggal_kembali) ? 'danger' : ''),            
-
+                ->color(fn ($record) => now()->gt($record->tanggal_kembali) ? 'danger' : ''),
 
             // Tables\Columns\TextColumn::make('detailPeminjaman.barang.nama_barang')
             // ->label('Barang Dipinjam')

@@ -21,6 +21,7 @@ class Peminjaman extends Model
         'acara',
         'tanggal_pinjam',
         'tanggal_kembali',
+        'status',
     ];
 
     protected $casts = [
@@ -36,6 +37,12 @@ class Peminjaman extends Model
     protected static function boot()
     {
         parent::boot();
+
+        static::retrieved(function ($peminjaman) {
+            if ($peminjaman->tanggal_kembali < now()) {
+                $peminjaman->update(['status' => 'Terlambat']);
+            }
+        });
 
         static::creating(function ($peminjaman) {
             if (!$peminjaman->unit) {
