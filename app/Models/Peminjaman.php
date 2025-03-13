@@ -46,7 +46,16 @@ class Peminjaman extends Model
                 Barang::where('id', $detail->barang_id)->update(['status' => 'tersedia']);
             }
 
-            // Catat riwayat peminjaman
+            // Ambil informasi barang yang dipinjam
+            $barangDipinjam = $peminjaman->detailPeminjaman->map(function ($detail) {
+                return [
+                    'nama_barang' => $detail->barang->nama_barang,
+                    'kode_barang' => $detail->barang->kode_barang,
+                    'jumlah' => $detail->jumlah, // Jika ada kolom jumlah
+                ];
+            });
+
+            // Catat riwayat peminjaman beserta barang yang dipinjam
             RiwayatPeminjaman::create([
                 'nama_peminjam' => $peminjaman->nama_peminjam,
                 'unit' => $peminjaman->unit,
@@ -54,6 +63,7 @@ class Peminjaman extends Model
                 'acara' => $peminjaman->acara,
                 'tanggal_pinjam' => $peminjaman->tanggal_pinjam,
                 'tanggal_kembali' => $peminjaman->tanggal_kembali,
+                'barang_dipinjam' => $barangDipinjam, // Simpan daftar barang dalam format JSON
             ]);
         });
     }

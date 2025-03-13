@@ -13,6 +13,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Forms\Components\KeyValue;
 
 class RiwayatPeminjamanResource extends Resource
 {
@@ -27,7 +28,6 @@ class RiwayatPeminjamanResource extends Resource
     {
         return $form
             ->schema([
-                // Form untuk create/edit (opsional, karena riwayat biasanya hanya dibaca)
                 Forms\Components\TextInput::make('nama_peminjam')
                     ->label('Nama Peminjam')
                     ->required(),
@@ -51,6 +51,12 @@ class RiwayatPeminjamanResource extends Resource
                 Forms\Components\DatePicker::make('tanggal_kembali')
                     ->label('Tanggal Kembali')
                     ->required(),
+
+                KeyValue::make('barang_dipinjam')
+                    ->label('Barang Dipinjam')
+                    ->keyLabel('Nama Barang')
+                    ->valueLabel('Kode Barang')
+                    ->disabled(), // Nonaktifkan edit karena ini hanya untuk tampilan
             ]);
     }
 
