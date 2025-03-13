@@ -10,10 +10,10 @@ class ListRiwayatPeminjamen extends ListRecords
 {
     protected static string $resource = RiwayatPeminjamanResource::class;
 
-    protected function getHeaderActions(): array
-    {
-        return [
-            Actions\CreateAction::make(),
-        ];
-    }
+    // protected function getHeaderActions(): array
+    // {
+    //     return [
+    //         Actions\CreateAction::make(),
+    //     ];
+    // }
 }

@@ -151,8 +151,8 @@ class RiwayatPeminjamanResource extends Resource
     {
         return [
             'index' => Pages\ListRiwayatPeminjamen::route('/'),
-            'create' => Pages\CreateRiwayatPeminjaman::route('/create'),
-            'edit' => Pages\EditRiwayatPeminjaman::route('/{record}/edit'),
+            // 'create' => Pages\CreateRiwayatPeminjaman::route('/create'),
+            // 'edit' => Pages\EditRiwayatPeminjaman::route('/{record}/edit'),
         ];
     }
 }
