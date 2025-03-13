@@ -18,6 +18,7 @@ class RiwayatPeminjaman extends Model
         'acara',
         'tanggal_pinjam',
         'tanggal_kembali',
+        'status',
     ];
 
     // Relasi ke tabel riwayat_detail_peminjaman

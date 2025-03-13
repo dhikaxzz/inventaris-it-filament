@@ -64,6 +64,7 @@ class Peminjaman extends Model
                 'acara' => $peminjaman->acara,
                 'tanggal_pinjam' => $peminjaman->tanggal_pinjam,
                 'tanggal_kembali' => $peminjaman->tanggal_kembali,
+                'status' => now()->gt($peminjaman->tanggal_kembali) ? 'Terlambat' : 'On Time',
             ]);
 
             // Catat detail barang yang dipinjam ke riwayat_detail_peminjaman

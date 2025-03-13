@@ -49,6 +49,11 @@ class RiwayatPeminjamanResource extends Resource
                     ->label('Acara')
                     ->required()
                     ->disabled(), // Nonaktifkan edit karena ini hanya untuk tampilan
+                
+                Forms\Components\TextInput::make('status')
+                    ->label('Status')
+                    ->required()
+                    ->disabled(), // Nonaktifkan edit karena ini hanya untuk tampilan
 
                 Forms\Components\DateTimePicker::make('tanggal_pinjam')
                     ->label('Tanggal Pinjam')
@@ -101,6 +106,13 @@ class RiwayatPeminjamanResource extends Resource
                     ->label('Acara')
                     ->searchable()
                     ->sortable(),
+
+                Tables\Columns\TextColumn::make('status')
+                    ->label('Status')
+                    ->searchable()
+                    ->sortable()
+                    ->badge()
+                    ->color(fn ($record) => $record->status === 'Terlambat' ? 'danger' : 'success'),
 
                 TextColumn::make('tanggal_pinjam')
                     ->label('Tanggal Pinjam')
