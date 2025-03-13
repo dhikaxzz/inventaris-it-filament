@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\RiwayatDetailPeminjaman;
 
 class Peminjaman extends Model
 {
@@ -46,25 +47,25 @@ class Peminjaman extends Model
                 Barang::where('id', $detail->barang_id)->update(['status' => 'tersedia']);
             }
 
-            // Ambil informasi barang yang dipinjam
-            $barangDipinjam = $peminjaman->detailPeminjaman->map(function ($detail) {
-                return [
-                    'nama_barang' => $detail->barang->nama_barang,
-                    'kode_barang' => $detail->barang->kode_barang,
-                    'jumlah' => $detail->jumlah, // Jika ada kolom jumlah
-                ];
-            });
-
-            // Catat riwayat peminjaman beserta barang yang dipinjam
-            RiwayatPeminjaman::create([
+            // Catat riwayat peminjaman
+            $riwayatPeminjaman = RiwayatPeminjaman::create([
                 'nama_peminjam' => $peminjaman->nama_peminjam,
                 'unit' => $peminjaman->unit,
                 'tempat' => $peminjaman->tempat,
                 'acara' => $peminjaman->acara,
                 'tanggal_pinjam' => $peminjaman->tanggal_pinjam,
                 'tanggal_kembali' => $peminjaman->tanggal_kembali,
-                'barang_dipinjam' => $barangDipinjam, // Simpan daftar barang dalam format JSON
             ]);
+
+            // Catat detail barang yang dipinjam ke riwayat_detail_peminjaman
+            foreach ($peminjaman->detailPeminjaman as $detail) {
+                RiwayatDetailPeminjaman::create([
+                    'riwayat_peminjaman_id' => $riwayatPeminjaman->id,
+                    'barang_id' => $detail->barang_id,
+                    'kode_barang' => $detail->kode_barang,
+                    'nama_barang' => $detail->barang->nama_barang,
+                ]);
+            }
         });
     }
 

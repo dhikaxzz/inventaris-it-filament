@@ -14,6 +14,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\KeyValue;
+use App\Models\RiwayatDetailPeminjaman;
+use Filament\Forms\Components\Repeater;
 
 class RiwayatPeminjamanResource extends Resource
 {
@@ -30,32 +32,48 @@ class RiwayatPeminjamanResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('nama_peminjam')
                     ->label('Nama Peminjam')
-                    ->required(),
+                    ->required()
+                    ->disabled(), // Nonaktifkan edit karena ini hanya untuk tampilan
 
                 Forms\Components\TextInput::make('unit')
                     ->label('Unit')
-                    ->required(),
+                    ->required()
+                    ->disabled(), // Nonaktifkan edit karena ini hanya untuk tampilan
 
                 Forms\Components\TextInput::make('tempat')
                     ->label('Tempat')
-                    ->required(),
+                    ->required()
+                    ->disabled(), // Nonaktifkan edit karena ini hanya untuk tampilan
 
                 Forms\Components\TextInput::make('acara')
                     ->label('Acara')
-                    ->required(),
+                    ->required()
+                    ->disabled(), // Nonaktifkan edit karena ini hanya untuk tampilan
 
                 Forms\Components\DateTimePicker::make('tanggal_pinjam')
                     ->label('Tanggal Pinjam')
-                    ->required(),
+                    ->required()
+                    ->disabled(), // Nonaktifkan edit karena ini hanya untuk tampilan
 
                 Forms\Components\DatePicker::make('tanggal_kembali')
                     ->label('Tanggal Kembali')
-                    ->required(),
+                    ->required()
+                    ->disabled(), // Nonaktifkan edit karena ini hanya untuk tampilan
 
-                KeyValue::make('barang_dipinjam')
+                // Menampilkan daftar barang yang dipinjam menggunakan Repeater
+                Repeater::make('riwayatDetailPeminjaman')
+                    ->relationship('riwayatDetailPeminjaman') // Relasi ke tabel riwayat_detail_peminjaman
+                    ->schema([
+                        Forms\Components\TextInput::make('nama_barang')
+                            ->label('Nama Barang')
+                            ->disabled(), // Nonaktifkan edit karena ini hanya untuk tampilan
+
+                        Forms\Components\TextInput::make('kode_barang')
+                            ->label('Kode Barang')
+                            ->disabled(), // Nonaktifkan edit karena ini hanya untuk tampilan
+                    ])
                     ->label('Barang Dipinjam')
-                    ->keyLabel('Nama Barang')
-                    ->valueLabel('Kode Barang')
+                    ->columnSpanFull() // Mengisi seluruh kolom
                     ->disabled(), // Nonaktifkan edit karena ini hanya untuk tampilan
             ]);
     }
@@ -64,7 +82,6 @@ class RiwayatPeminjamanResource extends Resource
     {
         return $table
             ->columns([
-                // Kolom untuk menampilkan data riwayat
                 TextColumn::make('nama_peminjam')
                     ->label('Nama Peminjam')
                     ->searchable()
@@ -95,10 +112,9 @@ class RiwayatPeminjamanResource extends Resource
                     ->date('d M Y')
                     ->sortable(),
 
-                TextColumn::make('created_at')
-                    ->label('Dicatat Pada')
-                    ->dateTime('d M Y H:i')
-                    ->sortable(),
+                TextColumn::make('riwayatDetailPeminjaman.nama_barang')
+                    ->label('Barang Dipinjam')
+                    ->listWithLineBreaks(), // Menampilkan daftar barang yang dipinjam
             ])
             ->filters([
                 // Filter opsional
@@ -116,7 +132,6 @@ class RiwayatPeminjamanResource extends Resource
                     }),
             ])
             ->actions([
-                // Opsi aksi (opsional)
                 Tables\Actions\ViewAction::make(), // Aksi untuk melihat detail
             ])
             ->bulkActions([
