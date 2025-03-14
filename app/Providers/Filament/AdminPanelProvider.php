@@ -32,8 +32,12 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->brandName('Inventaris IT FKUI')
             ->colors([
-                'primary' => Color::Amber,
+                // 'primary' => Color::Amber,
+                'primary' => '#4F46E5', // Warna utama
+                'secondary' => '#1E293B', // Warna sidebar
+                'gray' => '#64748B', // Warna abu-abu untuk teks
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
