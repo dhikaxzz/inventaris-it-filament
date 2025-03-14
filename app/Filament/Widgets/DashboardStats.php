@@ -5,10 +5,10 @@ namespace App\Filament\Widgets;
 use App\Models\Barang;
 use App\Models\Peminjaman;
 use App\Models\Pengguna;
-use App\Filament\Widgets\MostActiveBorrowersChart;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use Illuminate\Support\Facades\DB;
+use App\Filament\Widgets\MostActiveBorrowersChart;
 use App\Filament\Widgets\MostBorrowedItemsChart;
 
 class DashboardStats extends BaseWidget
@@ -69,8 +69,8 @@ class DashboardStats extends BaseWidget
     public static function getWidgets(): array
     {
         return [
-            MostActiveBorrowersChart::class,
             MostBorrowedItemsChart::class,
+            MostActiveBorrowersChart::class,
         ];
     }
 }
