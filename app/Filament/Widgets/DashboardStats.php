@@ -5,6 +5,7 @@ namespace App\Filament\Widgets;
 use App\Models\Barang;
 use App\Models\Peminjaman;
 use App\Models\Pengguna;
+use App\Filament\Widgets\MostActiveBorrowersChart;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use Illuminate\Support\Facades\DB;
@@ -61,6 +62,13 @@ class DashboardStats extends BaseWidget
                 ->color('gray')
                 ->icon('heroicon-o-x-circle')
                 ->chart([$barangRusakLecet - 1, $barangRusakLecet, $barangRusakLecet + 1]),
+        ];
+    }
+
+    public static function getWidgets(): array
+    {
+        return [
+            MostActiveBorrowersChart::class,
         ];
     }
 }
