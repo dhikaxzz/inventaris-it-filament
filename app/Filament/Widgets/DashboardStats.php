@@ -9,6 +9,7 @@ use App\Filament\Widgets\MostActiveBorrowersChart;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use Illuminate\Support\Facades\DB;
+use App\Filament\Widgets\MostBorrowedItemsChart;
 
 class DashboardStats extends BaseWidget
 {
@@ -69,6 +70,7 @@ class DashboardStats extends BaseWidget
     {
         return [
             MostActiveBorrowersChart::class,
+            MostBorrowedItemsChart::class,
         ];
     }
 }
