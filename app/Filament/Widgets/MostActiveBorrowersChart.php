@@ -7,7 +7,7 @@ use App\Models\Peminjaman;
 
 class MostActiveBorrowersChart extends ChartWidget
 {
-    protected static ?string $heading = 'Pengguna dengan Peminjaman Terbanyak';
+    protected static ?string $heading = 'Pengguna dengan peminjaman terbanyak (aktif)';
     protected static ?int $sort = 2; // Menentukan urutan widget jika ada beberapa
 
     protected function getData(): array

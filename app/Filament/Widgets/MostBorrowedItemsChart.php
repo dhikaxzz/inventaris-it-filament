@@ -8,7 +8,7 @@ use App\Models\DetailPeminjaman;
 
 class MostBorrowedItemsChart extends ChartWidget
 {
-    protected static ?string $heading = 'Pengguna dengan Barang Paling Banyak Dipinjam';
+    protected static ?string $heading = 'Pengguna dengan barang paling banyak dipinjam (aktif)';
 
     protected function getData(): array
     {
