@@ -20,6 +20,7 @@ use App\Filament\Resources\BarangResource\RelationManagers\RiwayatKondisiRelatio
 use Filament\Tables\Actions\Action;
 use Filament\Forms\Components\FileUpload;
 use Intervention\Image\Facades\Image;
+use Filament\Notifications\Notification;
 // use Intervention\Image\ImageManagerStatic as Image;
 
 class BarangResource extends Resource
@@ -88,6 +89,7 @@ class BarangResource extends Resource
                     if ($record && $record->exists && $record->kondisi !== $state) { 
                         $keterangan = "Barang berubah dari kondisi {$record->kondisi} ke {$state}";
             
+                        // Simpan ke riwayat kondisi
                         $record->riwayatKondisi()->create([
                             'kondisi_sebelumnya' => $record->kondisi,
                             'kondisi_setelahnya' => $state,
@@ -135,8 +137,15 @@ class BarangResource extends Resource
             Tables\Columns\TextColumn::make('nama_barang')->sortable()->searchable(),
             Tables\Columns\TextColumn::make('kategori.nama_kategori')->label('Kategori')->sortable()->searchable(),
             Tables\Columns\TextColumn::make('merek')->sortable()->searchable(),
-            Tables\Columns\TextColumn::make('kondisi')->sortable()->searchable(),
             Tables\Columns\TextColumn::make('lokasi')->sortable()->searchable(),
+            Tables\Columns\TextColumn::make('kondisi')
+            ->sortable()
+            ->searchable()
+            ->color(fn (string $state): string => match ($state) {
+                'Baik' => 'success',
+                'Lecet' => 'warning',
+                'Rusak' => 'danger',
+            }),
             Tables\Columns\TextColumn::make('status')
                 ->badge()
                 ->color(fn (string $state): string => match ($state) {
