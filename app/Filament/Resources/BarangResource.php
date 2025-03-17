@@ -148,6 +148,8 @@ class BarangResource extends Resource
             }),
             Tables\Columns\TextColumn::make('status')
                 ->badge()
+                ->sortable()
+                ->searchable()
                 ->color(fn (string $state): string => match ($state) {
                     'Tersedia' => 'success', 
                     'Dipinjam' => 'danger',
