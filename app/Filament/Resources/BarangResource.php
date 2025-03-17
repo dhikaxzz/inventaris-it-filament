@@ -25,11 +25,20 @@ use Filament\Notifications\Notification;
 
 class BarangResource extends Resource
 {
+    protected static ?string $recordTitleAttribute = 'nama_barang';
+    
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['nama_barang', 'merek'];
+    }
+
     protected static ?string $model = Barang::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
     
     protected static ?string $navigationLabel = 'Kelola Barang';
+    protected static ?string $pluralLabel = 'Barang';
+    protected static ?string $modelLabel = 'Barang';
 
     protected static ?string $navigationGroup = 'Manajemen';
 

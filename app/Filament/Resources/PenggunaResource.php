@@ -18,9 +18,16 @@ use Filament\Tables\Columns\TextColumn;
 
 class PenggunaResource extends Resource
 {
+    protected static ?string $recordTitleAttribute = 'nama';
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['nama', 'email', 'unit'];
+    }
     protected static ?string $model = Pengguna::class;
     protected static ?string $navigationLabel = 'Kelola Pengguna';
     protected static ?string $navigationIcon = 'heroicon-o-user';
+    protected static ?string $pluralLabel = 'Pengguna';
+    protected static ?string $modelLabel = 'Pengguna';
     protected static ?string $navigationGroup = 'Manajemen';
     
     public static function form(Form $form): Form
