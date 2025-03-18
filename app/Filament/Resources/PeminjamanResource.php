@@ -193,7 +193,7 @@ class PeminjamanResource extends Resource
                 "peminjaman-{$record->id}.pdf"
             )),
             Tables\Actions\EditAction::make(),
-            Tables\Actions\DeleteAction::make()
+            Tables\Actions\DeleteAction::make()->label('Kembalikan dan hapus')
         ]) 
 
         ->bulkActions([
