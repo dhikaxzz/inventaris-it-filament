@@ -62,6 +62,12 @@ class BarangResource extends Resource
                 ->required()
                 ->unique(ignoreRecord: true) // Abaikan jika record ID sama
                 ->maxLength(255),
+
+            Forms\Components\TextInput::make('serial_number')
+                ->label('Serial Number')
+                ->nullable()
+                ->maxLength(255),
+
     
             Forms\Components\TextInput::make('nama_barang')
                 ->required()
@@ -124,7 +130,7 @@ class BarangResource extends Resource
                 ->disabled()
                 ->formatStateUsing(fn ($state) => $state ? \Carbon\Carbon::parse($state)->format('d M Y H:i') : '-'),    
                 
-                Forms\Components\FileUpload::make('foto')
+            Forms\Components\FileUpload::make('foto')
                 ->label('Foto Barang')
                 ->image()
                 ->maxSize(1024) // Maksimal 1MB
@@ -143,6 +149,7 @@ class BarangResource extends Resource
     {
         return $table->columns([
             Tables\Columns\TextColumn::make('kode_barang')->sortable()->searchable(),
+            Tables\Columns\TextColumn::make('serial_number')->label('Serial Number')->sortable()->searchable(),
             Tables\Columns\TextColumn::make('nama_barang')->sortable()->searchable(),
             Tables\Columns\TextColumn::make('kategori.nama_kategori')->label('Kategori')->sortable()->searchable(),
             Tables\Columns\TextColumn::make('merek')->sortable()->searchable(),
