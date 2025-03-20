@@ -59,25 +59,26 @@ class BarangResource extends Resource
     {
         return $form->schema([
             Forms\Components\TextInput::make('kode_barang')
+                ->label('Kode Barang')
                 ->required()
-                ->unique(ignoreRecord: true) // Abaikan jika record ID sama
+                ->unique(ignoreRecord: true)
                 ->maxLength(255),
-
+    
             Forms\Components\TextInput::make('serial_number')
                 ->label('Serial Number')
                 ->nullable()
                 ->maxLength(255),
-
     
             Forms\Components\TextInput::make('nama_barang')
+                ->label('Nama Barang')
                 ->required()
                 ->maxLength(255),
-
+    
             Forms\Components\TextInput::make('merek')
                 ->label('Merek')
                 ->maxLength(255)
                 ->nullable(),
-
+    
             Forms\Components\TextInput::make('model_seri')
                 ->label('Model/Seri')
                 ->maxLength(255)
@@ -99,12 +100,10 @@ class BarangResource extends Resource
                     'Lecet' => 'Lecet',
                     'Rusak' => 'Rusak',
                 ])
-                ->default('Baik') // Set default biar nggak kosong
+                ->default('Baik')
                 ->afterStateUpdated(function ($state, $record) {
-                    if ($record && $record->exists && $record->kondisi !== $state) { 
+                    if ($record && $record->exists && $record->kondisi !== $state) {
                         $keterangan = "Barang berubah dari kondisi {$record->kondisi} ke {$state}";
-            
-                        // Simpan ke riwayat kondisi
                         $record->riwayatKondisi()->create([
                             'kondisi_sebelumnya' => $record->kondisi,
                             'kondisi_setelahnya' => $state,
@@ -113,37 +112,32 @@ class BarangResource extends Resource
                         ]);
                     }
                 }),
-
-
-
-            Forms\Components\TextInput::make('status')
-                ->default('Tersedia')
-                ->disabled(),
     
             Forms\Components\Textarea::make('keterangan')
                 ->label('Keterangan')
                 ->rows(3)
                 ->nullable(),
 
-            Forms\Components\TextInput::make('created_at')
-                ->label('Tanggal Ditambahkan')
-                ->disabled()
-                ->formatStateUsing(fn ($state) => $state ? \Carbon\Carbon::parse($state)->format('d M Y H:i') : '-'),    
-                
+            Forms\Components\TextInput::make('status')
+                ->label('Status')
+                ->default('Tersedia')
+                ->disabled(),
+    
             Forms\Components\FileUpload::make('foto')
                 ->label('Foto Barang')
                 ->image()
-                ->maxSize(1024) // Maksimal 1MB
-                ->directory('uploads-barang') // Simpan di storage/app/public/uploads-barang
+                ->maxSize(1024)
+                ->directory('uploads-barang')
                 ->preserveFilenames(),
-                // ->afterStateUploaded(function ($state) {
-                //     $image = Image::make($state->getRealPath());
-                //     $image->resize(800, 600, function ($constraint) {
-                //         $constraint->aspectRatio();
-                //     })->save();
-                // }),         
-            ]);
+    
+            Forms\Components\TextInput::make('created_at')
+                ->label('Tanggal Ditambahkan')
+                ->disabled()
+                ->hidden()
+                ->formatStateUsing(fn ($state) => $state ? \Carbon\Carbon::parse($state)->format('d M Y H:i') : '-'),
+        ]);
     }
+    
 
     public static function table(Table $table): Table
     {
