@@ -62,39 +62,47 @@ class BarangResource extends Resource
                 ->label('Kode Barang')
                 ->required()
                 ->unique(ignoreRecord: true)
+                ->prefixIcon('heroicon-o-tag')
                 ->maxLength(255),
     
             Forms\Components\TextInput::make('serial_number')
                 ->label('Serial Number')
                 ->nullable()
+                ->prefixIcon('heroicon-o-hashtag')
                 ->maxLength(255),
     
             Forms\Components\TextInput::make('nama_barang')
                 ->label('Nama Barang')
                 ->required()
+                ->prefixIcon('heroicon-o-archive-box')
                 ->maxLength(255),
     
             Forms\Components\TextInput::make('merek')
                 ->label('Merek')
                 ->maxLength(255)
+                ->prefixIcon('heroicon-o-bookmark')
                 ->nullable(),
     
             Forms\Components\TextInput::make('model_seri')
                 ->label('Model/Seri')
                 ->maxLength(255)
+                ->prefixIcon('heroicon-o-cube')
                 ->nullable(),
     
             Forms\Components\Select::make('kategori_id')
                 ->label('Kategori')
                 ->options(fn () => Kategori::all()->pluck('nama_kategori', 'id'))
+                ->prefixIcon('heroicon-o-list-bullet')
                 ->required(),
     
             Forms\Components\TextInput::make('lokasi')
                 ->label('Lokasi Barang')
+                ->prefixIcon('heroicon-o-map-pin')
                 ->required(),
     
             Forms\Components\Select::make('kondisi')
                 ->label('Kondisi')
+                ->prefixIcon('heroicon-o-shield-check')
                 ->options([
                     'Baik' => 'Baik',
                     'Lecet' => 'Lecet',
@@ -121,6 +129,7 @@ class BarangResource extends Resource
             Forms\Components\TextInput::make('status')
                 ->label('Status')
                 ->default('Tersedia')
+                ->prefixIcon('heroicon-o-check-circle')
                 ->disabled(),
     
             Forms\Components\FileUpload::make('foto')
@@ -134,6 +143,7 @@ class BarangResource extends Resource
                 ->label('Tanggal Ditambahkan')
                 ->disabled()
                 ->hidden()
+                ->prefixIcon('heroicon-o-calendar')
                 ->formatStateUsing(fn ($state) => $state ? \Carbon\Carbon::parse($state)->format('d M Y H:i') : '-'),
         ]);
     }
