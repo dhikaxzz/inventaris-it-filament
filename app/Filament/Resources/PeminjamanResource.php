@@ -51,6 +51,7 @@ class PeminjamanResource extends Resource
                                     ->options(Pengguna::pluck('nama', 'nama'))
                                     ->searchable()
                                     ->required()
+                                    ->prefixIcon('heroicon-o-user')
                                     ->reactive()
                                     ->afterStateUpdated(fn (Get $get, callable $set) => 
                                         $set('unit', Pengguna::where('nama', $get('nama_peminjam'))->value('unit'))
@@ -59,18 +60,21 @@ class PeminjamanResource extends Resource
                                 TextInput::make('unit')
                                     ->label('Unit')
                                     ->disabled()
+                                    ->prefixIcon('heroicon-o-user-group')
                                     ->placeholder('Unit akan otomatis terisi')
                                     ->required(),
         
                                 TextInput::make('tempat')
                                     ->required()
                                     ->label('Tempat Barang Dipinjam')
+                                    ->prefixIcon('heroicon-o-map-pin')
                                     ->placeholder('Lokasi peminjaman')
                                     ->columnSpanFull(),
         
                                 TextInput::make('acara')
                                     ->label('Acara')
                                     ->placeholder('Nama acara')
+                                    ->prefixIcon('heroicon-o-building-library')
                                     ->required()
                                     ->columnSpanFull(),
         
@@ -117,6 +121,7 @@ class PeminjamanResource extends Resource
                                         TextInput::make('kode_barang')
                                             ->label('Kode Barang')
                                             ->disabled()
+                                            ->prefixIcon('heroicon-o-tag')
                                             ->required(),
                                     ])
                             ])
