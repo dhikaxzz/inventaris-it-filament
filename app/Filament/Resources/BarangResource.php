@@ -203,17 +203,7 @@ class BarangResource extends Resource
                 ->modalContent(fn ($record) => view('components.qrcode', ['kode_barang' => $record->kode_barang]))
                 ->modalButton('Tutup')
                 ->color('primary'),
-            Action::make('pengguna_terakhir')
-                ->label('Peminjam Terakhir')
-                ->icon('heroicon-o-users')
-                ->modalHeading('Peminjam Terakhir')
-                ->modalDescription('Menampilkan siapa yang terakhir meminjam barang ini.')
-                ->modalSubmitAction(false) // Tidak ada tombol submit
-                ->modalContent(fn ($record) => view('components.peminjam-terakhir', [
-                    'peminjaman' => Peminjaman::whereHas('detailPeminjaman', function ($query) use ($record) {
-                        $query->where('barang_id', $record->id);
-                    })->latest()->get(),
-                ])),
+
             Tables\Actions\EditAction::make(),
             Tables\Actions\DeleteAction::make(),
         ])
