@@ -200,19 +200,23 @@ class BarangResource extends Resource
         ->actions([
             Tables\Actions\Action::make('lihat_qr')
                 ->label('Lihat QR')
+                ->modalCancelAction(false) // Hapus tombol Cancel
+                ->modalSubmitAction(false) // Hapus tombol Cancel
                 ->icon('heroicon-o-qr-code')
                 ->modalHeading(fn ($record) => "QR Code - {$record->kode_barang}")
                 ->modalContent(fn ($record) => view('components.qrcode', ['kode_barang' => $record->kode_barang]))
                 ->color('primary'),
 
-                Action::make('pengguna_terakhir')
-                    ->label('Pengguna Terakhir')
-                    ->icon('heroicon-o-user')
-                    ->modalHeading('Pengguna Terakhir Barang')
-                    ->modalContent(fn (Model $record) => view('components.pengguna-terakhir', [
-                        'barang' => $record,
-                        'penggunaTerakhir' => $record->getPenggunaTerakhir(),
-                    ])),
+            Action::make('pengguna_terakhir')
+                ->label('Pengguna Terakhir')
+                ->modalCancelAction(false)
+                ->modalSubmitAction(false)
+                ->icon('heroicon-o-user')
+                ->modalHeading('Pengguna Terakhir Barang')
+                ->modalContent(fn (Model $record) => view('components.pengguna-terakhir', [
+                    'barang' => $record,
+                    'penggunaTerakhir' => $record->getPenggunaTerakhir(),
+                ])),
             Tables\Actions\EditAction::make(),
             Tables\Actions\DeleteAction::make(),
         ])

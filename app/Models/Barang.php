@@ -76,7 +76,15 @@ class Barang extends Model
 
     public function getPenggunaTerakhir()
     {
-        return $this->peminjamanTerakhir?->riwayatPeminjaman?->nama_peminjam ?? 'Belum Pernah Dipinjam';
+        $peminjamanTerakhir = $this->peminjamanTerakhir;
+
+    return $peminjamanTerakhir
+        ? [
+            'nama' => $peminjamanTerakhir->riwayatPeminjaman->nama_peminjam,
+            'tanggal_pinjam' => $peminjamanTerakhir->riwayatPeminjaman->tanggal_pinjam,
+            'tanggal_kembali' => $peminjamanTerakhir->riwayatPeminjaman->tanggal_kembali,
+        ]
+        : 'Belum Pernah Dipinjam';
     }
 
 }
