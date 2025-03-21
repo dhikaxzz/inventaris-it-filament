@@ -22,6 +22,8 @@ use Filament\Tables\Actions\Action;
 use Filament\Forms\Components\FileUpload;
 use Intervention\Image\Facades\Image;
 use Filament\Notifications\Notification;
+use Illuminate\Database\Eloquent\Model;
+
 // use Intervention\Image\ImageManagerStatic as Image;
 
 class BarangResource extends Resource
@@ -201,9 +203,16 @@ class BarangResource extends Resource
                 ->icon('heroicon-o-qr-code')
                 ->modalHeading(fn ($record) => "QR Code - {$record->kode_barang}")
                 ->modalContent(fn ($record) => view('components.qrcode', ['kode_barang' => $record->kode_barang]))
-                ->modalButton('Tutup')
                 ->color('primary'),
 
+                Action::make('pengguna_terakhir')
+                    ->label('Pengguna Terakhir')
+                    ->icon('heroicon-o-user')
+                    ->modalHeading('Pengguna Terakhir Barang')
+                    ->modalContent(fn (Model $record) => view('components.pengguna-terakhir', [
+                        'barang' => $record,
+                        'penggunaTerakhir' => $record->getPenggunaTerakhir(),
+                    ])),
             Tables\Actions\EditAction::make(),
             Tables\Actions\DeleteAction::make(),
         ])

@@ -60,4 +60,23 @@ class Barang extends Model
    {
        return $this->foto ? Storage::url($this->foto) : null;
    }
+   
+//    public function getPenggunaTerakhir()
+//     {
+//         return $this->hasOne(RiwayatDetailPeminjaman::class, 'barang_id')
+//             ->latest('id') // Mengambil peminjaman terakhir berdasarkan ID terbaru
+//             ->with('riwayatPeminjaman'); // Include data peminjaman
+//     }
+
+    public function peminjamanTerakhir()
+    {
+        return $this->hasOne(RiwayatDetailPeminjaman::class, 'barang_id')
+                    ->latestOfMany('riwayat_peminjaman_id'); 
+    }
+
+    public function getPenggunaTerakhir()
+    {
+        return $this->peminjamanTerakhir?->riwayatPeminjaman?->nama_peminjam ?? 'Belum Pernah Dipinjam';
+    }
+
 }
