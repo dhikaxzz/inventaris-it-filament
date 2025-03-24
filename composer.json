@@ -9,6 +9,7 @@
         "php": "^8.2",
         "bacon/bacon-qr-code": "^2.0",
         "barryvdh/laravel-dompdf": "^3.1",
+        "bezhansalleh/filament-shield": "^3.3",
         "charrafimed/global-search-modal": "*",
         "dasprid/enum": "^1.0",
         "filament/filament": "^3.2",

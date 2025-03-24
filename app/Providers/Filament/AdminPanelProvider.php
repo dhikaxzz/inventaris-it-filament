@@ -22,6 +22,7 @@ use Filament\Facades\Filament;
 use Filament\Support\Assets\Js;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\View;
+use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -34,7 +35,6 @@ class AdminPanelProvider extends PanelProvider
             ->login()
             ->brandName('Inventaris IT FKUI')
             ->colors([
-                // 'primary' => Color::Amber,
                 'primary' => '#4F46E5', // Warna utama
                 'secondary' => '#1E293B', // Warna sidebar
                 'gray' => '#64748B', // Warna abu-abu untuk teks
@@ -62,6 +62,9 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
+            ])
+            ->plugins([
+                FilamentShieldPlugin::make(),
             ]);
     }
 
@@ -73,6 +76,7 @@ class AdminPanelProvider extends PanelProvider
             Js::make('html5-qrcode-script', __DIR__ . '/../../resources/js/html5-qrcode-script.js'),
         ]);
     }
+
     public function printPDF($record)
     {
         $pdf = Pdf::loadView('pdf.peminjaman', ['peminjaman' => $record]);
