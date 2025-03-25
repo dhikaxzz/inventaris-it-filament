@@ -16,9 +16,23 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\KeyValue;
 use App\Models\RiwayatDetailPeminjaman;
 use Filament\Forms\Components\Repeater;
+use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 
-class RiwayatPeminjamanResource extends Resource
+class RiwayatPeminjamanResource extends Resource implements HasShieldPermissions
 {
+    public static function getPermissionPrefixes(): array
+    {
+        return [
+            'view',
+            'view_any',
+            'create',
+            'update',
+            'delete',
+            'delete_any',
+            'publish'
+        ];
+    }
+    
     protected static ?string $model = RiwayatPeminjaman::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-archive-box-arrow-down';

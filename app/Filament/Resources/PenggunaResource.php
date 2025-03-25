@@ -15,9 +15,23 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Tables\Columns\TextColumn;
+use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 
-class PenggunaResource extends Resource
+class PenggunaResource extends Resource implements HasShieldPermissions
 {
+    public static function getPermissionPrefixes(): array
+    {
+        return [
+            'view',
+            'view_any',
+            'create',
+            'update',
+            'delete',
+            'delete_any',
+            'publish'
+        ];
+    }
+    
     protected static ?string $recordTitleAttribute = 'nama';
     public static function getGloballySearchableAttributes(): array
     {
