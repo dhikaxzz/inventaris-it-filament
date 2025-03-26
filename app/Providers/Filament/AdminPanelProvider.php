@@ -33,6 +33,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            // ->registration()
             ->brandName('Inventaris IT FKUI')
             ->colors([
                 'primary' => '#4F46E5', // Warna utama
