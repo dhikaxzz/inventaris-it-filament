@@ -1,3 +1,5 @@
+sebelum menggunakan, sesuaikan terlebih dahulu php.ini di xampp. copy file php.ini github saya ke php.ini kalian
+
 setelah php artisan make:filament-user, lakukan php artisan tinker dan jalankan perintah di bawah ini satu persatu :
 
 use App\Models\User;
