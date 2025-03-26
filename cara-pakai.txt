@@ -1,1 +1,13 @@
-sebelum menggunakan, sesuaikan terlebih dahulu php.ini di xampp. copy file php.ini github saya ke php.ini kalian
+Sebelum menggunakan project Inventaris Gudang, sesuaikan terlebih dahulu php.ini di github saya dengan milik kalian
+Ikut beberapa langkah dibawah ini :
+- git pull origin main (ini akan menyesuaikan file terakhir)
+- composer install (ini akan install tools github)
+- cp .env.example .env (setelahnya buka .env lalu sesuaikan dengan db dan lainnya)
+- php artisan key:generate (ini akan mengatur aplikasi key di file .env)
+- php artisan migrate --seed (membuat database dan tabel beserta beberapa data)
+- php artisan shield:setup
+- php artisan shield:install admin
+- php artisan shield:generate --all
+- php artisan app:make-filament-user-with-role
+- php artisan serve, lalu buka bash terbaru dan jalankan npm run dev (jika npm run dev tidak bisa, lakukan perintah npm install, jika sudah selesai jalankan npm run dev)
+- 
