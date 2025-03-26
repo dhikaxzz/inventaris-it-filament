@@ -8,6 +8,9 @@ Ikut beberapa langkah dibawah ini :
 - php artisan shield:setup
 - php artisan shield:install admin
 - php artisan shield:generate --all
+- php artisan config:clear
+- php artisan cache:clear
+- composer dump-autoload
 - php artisan app:make-filament-user-with-role
 - php artisan serve, lalu buka bash terbaru dan jalankan npm run dev (jika npm run dev tidak bisa, lakukan perintah npm install, jika sudah selesai jalankan npm run dev)
 - 
